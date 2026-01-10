@@ -1,9 +1,20 @@
 <template>
     <div :class="`  h-full `">
+        <Dialog
+            v-model="dialogStore.isOpen"
+            :title="''"
+            :content="dialogStore.content"
+            :bind-properties="dialogStore.bindProperties"
+        />
         <RouterView />
     </div>
 </template>
+<script setup lang="ts">
+import Dialog from '@/components/Dialog.vue'
+import { useDialog } from './stores/dialog'
 
+const dialogStore = useDialog()
+</script>
 <style>
 @font-face {
     font-family: 'Nunito';
