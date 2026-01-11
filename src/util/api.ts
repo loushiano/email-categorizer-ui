@@ -1,12 +1,5 @@
+import type { AuthStore } from '@/stores/auth'
 import axios from 'axios'
-
-interface AuthStore {
-    logout: Function
-    setLoginState: Function
-    renewToken: Function
-    state: { token: string | null; expiryDate: number }
-    hasPermissions: Function
-}
 
 export const apiCall = axios.create({
     baseURL: import.meta.env.VITE_API_URL
@@ -65,7 +58,10 @@ export const apiPost = async <T>(
 }
 
 export const renewToken = async (authStore: AuthStore, force = false) => {
-    if (new Date(authStore.state.expiryDate).valueOf() - new Date().valueOf() / 1000 < 60 * 5 || force) {
+    if (
+        new Date(authStore.state.expiryDate).valueOf() - new Date().valueOf() / 1000 < 60 * 5 ||
+        force
+    ) {
         try {
             const response = await apiCall.post(
                 '/auth/renew',

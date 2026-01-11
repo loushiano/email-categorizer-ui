@@ -9,6 +9,13 @@ export interface AuthState {
     expiryDate: number
 }
 
+export interface AuthStore {
+    logout: Function
+    setLoginState: Function
+    renewToken: Function
+    state: AuthState
+}
+
 export const useAuthStore = defineStore('auth', () => {
     const initialAuth = JSON.parse(localStorage.getItem('auth') || '{}')
     const state = ref<AuthState>({

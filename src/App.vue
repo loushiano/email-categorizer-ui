@@ -6,13 +6,24 @@
             :content="dialogStore.content"
             :bind-properties="dialogStore.bindProperties"
         />
+        <Notification
+            :title="toast.title"
+            :message="toast.message"
+            :status="toast.status"
+            v-model="toast.show"
+            :timeout="toast.timeout"
+            :testId="toast.testId"
+        />
         <RouterView />
     </div>
 </template>
 <script setup lang="ts">
 import Dialog from '@/components/Dialog.vue'
 import { useDialog } from './stores/dialog'
+import Notification from './components/notification.vue'
+import { useToast } from './stores/notification'
 
+const toast = useToast()
 const dialogStore = useDialog()
 </script>
 <style>

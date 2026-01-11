@@ -9,11 +9,25 @@ export const isRouteChanging = ref(false)
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        // the children array here, can be extracted and used in all other integrations.
         {
             path: '',
             name: 'Main',
             component: () => import('../components/MainPage.vue')
+        },
+        {
+            path: '/dashboard',
+            name: 'Dashboard',
+            component: () => import('../components/dashboard/DashboardPage.vue')
+        },
+        {
+            path: '/dashboard/emails/category/:categoryId',
+            name: 'EmailsByCategory',
+            component: () => import('../components/dashboard/EmailsByCategoryPage.vue')
+        },
+        {
+            path: '/dashboard/emails/uncategorized',
+            name: 'UncategorizedEmails',
+            component: () => import('../components/dashboard/EmailsByCategoryPage.vue')
         }
     ]
 })
