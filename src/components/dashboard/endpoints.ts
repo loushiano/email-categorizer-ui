@@ -26,6 +26,7 @@ export interface UserIncomingEmail {
     isProcessed: boolean
     unsubscribed: boolean
     unsubscribeStatus: UnsubscribeStatus
+    unsubscribeAttempts: number
     processingStatus: EmailProcessingStatus
     processingAttempts: number
 }

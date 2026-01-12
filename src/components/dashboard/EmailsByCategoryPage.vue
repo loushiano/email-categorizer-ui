@@ -127,6 +127,12 @@
                                                 Unsubscribe Queued
                                             </span>
                                             <span
+                                                v-else-if="email.unsubscribeStatus === 'failed' && email.unsubscribeAttempts < 2"
+                                                class="px-2 py-0.5 text-xs bg-amber-100 text-amber-700 rounded-full"
+                                            >
+                                                Unsubscribe Failed - Retrying
+                                            </span>
+                                            <span
                                                 v-else-if="email.unsubscribeStatus === 'failed'"
                                                 class="px-2 py-0.5 text-xs bg-red-100 text-red-700 rounded-full"
                                             >
