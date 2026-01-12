@@ -106,9 +106,6 @@
                                     >
                                 </template>
                             </button>
-                            <p class="mt-4 text-xs text-gray-500">
-                                We only request read access to your emails. Your data stays private.
-                            </p>
                         </div>
                     </div>
 
@@ -197,11 +194,6 @@
             </main>
 
             <!-- Footer -->
-            <footer class="py-8 border-t border-gray-200">
-                <p class="text-center text-sm text-gray-500">
-                    Powered by Claude AI. Your emails are processed securely.
-                </p>
-            </footer>
         </div>
     </div>
 </template>
