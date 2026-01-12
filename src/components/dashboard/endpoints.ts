@@ -30,9 +30,21 @@ export interface UserEmailCategory {
     description: string
 }
 
+export interface UserEmailStatus {
+    userId: string
+    email: string
+    emailCount: number
+    emailLimit: number
+    isLimitReached: boolean
+}
+
 // Credentials (Connected Inboxes)
 export const getMyCredentials = (authStore: AuthStore) =>
     apiGet<UserCredential[]>('users/credentials', authStore)
+
+// Email Status (limit info)
+export const getUserEmailStatus = (authStore: AuthStore) =>
+    apiGet<UserEmailStatus>('users/email-status', authStore)
 
 // Incoming Emails
 export const getMyIncomingEmails = (authStore: AuthStore) =>

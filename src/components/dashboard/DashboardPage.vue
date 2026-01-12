@@ -12,6 +12,51 @@
                 </button>
             </div>
 
+            <!-- Email Limit Warning -->
+            <div
+                v-if="emailStatus?.isLimitReached"
+                class="mb-6 bg-amber-50 border border-amber-200 rounded-lg p-4"
+            >
+                <div class="flex items-start gap-3">
+                    <ExclamationTriangleIcon class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                    <div>
+                        <h3 class="text-sm font-medium text-amber-800">Email Limit Reached</h3>
+                        <p class="text-sm text-amber-700 mt-1">
+                            You have reached your limit of {{ emailStatus.emailLimit }} emails.
+                            New emails will no longer be synced from your connected inboxes.
+                            Please delete some emails to continue receiving new ones.
+                        </p>
+                        <p class="text-xs text-amber-600 mt-2">
+                            Current usage: {{ emailStatus.emailCount }} / {{ emailStatus.emailLimit }} emails
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Usage Progress (when not at limit) -->
+            <div
+                v-else-if="emailStatus && emailStatus.emailCount > 0"
+                class="mb-6 bg-white border border-gray-200 rounded-lg p-4"
+            >
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm text-gray-600">Email Usage</span>
+                    <span class="text-sm font-medium text-gray-900">
+                        {{ emailStatus.emailCount }} / {{ emailStatus.emailLimit }}
+                    </span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                        class="h-2 rounded-full transition-all"
+                        :class="[
+                            emailStatus.emailCount / emailStatus.emailLimit > 0.8
+                                ? 'bg-amber-500'
+                                : 'bg-indigo-500'
+                        ]"
+                        :style="{ width: `${(emailStatus.emailCount / emailStatus.emailLimit) * 100}%` }"
+                    ></div>
+                </div>
+            </div>
+
             <!-- Tabs -->
             <div class="border-b border-gray-200 mb-6">
                 <nav class="-mb-px flex space-x-8">
@@ -190,8 +235,10 @@ import {
     getMyCredentials,
     getEmailCategories,
     getAddInboxUrl,
+    getUserEmailStatus,
     type UserCredential,
-    type UserEmailCategory
+    type UserEmailCategory,
+    type UserEmailStatus
 } from './endpoints'
 import AddCategoryDialog from './AddCategoryDialog.vue'
 import DeleteCategoryDialog from './DeleteCategoryDialog.vue'
@@ -205,7 +252,8 @@ import {
     TagIcon,
     InboxIcon,
     ArrowRightOnRectangleIcon,
-    XCircleIcon
+    XCircleIcon,
+    ExclamationTriangleIcon
 } from '@heroicons/vue/24/outline'
 
 const router = useRouter()
@@ -223,16 +271,19 @@ const addingInbox = ref(false)
 
 const credentials = ref<UserCredential[]>([])
 const categories = ref<UserEmailCategory[]>([])
+const emailStatus = ref<UserEmailStatus | null>(null)
 
 const fetchData = async () => {
     loading.value = true
     try {
-        const [creds, cats] = await Promise.all([
+        const [creds, cats, status] = await Promise.all([
             getMyCredentials(authStore),
-            getEmailCategories(authStore)
+            getEmailCategories(authStore),
+            getUserEmailStatus(authStore)
         ])
         credentials.value = creds
         categories.value = cats
+        emailStatus.value = status
     } catch (error) {
         console.error('Failed to fetch data:', error)
     } finally {
