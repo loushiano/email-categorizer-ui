@@ -8,6 +8,9 @@ export interface UserCredential {
     watcherDate: number
 }
 
+export type UnsubscribeStatus = 'none' | 'pending' | 'processing' | 'completed' | 'failed'
+export type EmailProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'
+
 export interface UserIncomingEmail {
     id: string
     from: string
@@ -22,6 +25,9 @@ export interface UserIncomingEmail {
     hasUnsubscribe: boolean
     isProcessed: boolean
     unsubscribed: boolean
+    unsubscribeStatus: UnsubscribeStatus
+    processingStatus: EmailProcessingStatus
+    processingAttempts: number
 }
 
 export interface UserEmailCategory {
